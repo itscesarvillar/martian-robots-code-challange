@@ -1,6 +1,6 @@
 import java.lang.IllegalArgumentException
 
-data class Input(val upperRightGridPoint: Point)
+data class Input(val upperRightGridPoint: Point, val robotsSequence: List<Pair<Spawn, List<Instruction>>>)
 // this is going to be reusable somewhere else, so it's a refactor thing
 data class Point(val x: Int, val y: Int)
 enum class Orientation { N, S, E, W }
@@ -13,6 +13,16 @@ fun mapOrientation(value: String): Orientation {
     else -> throw IllegalArgumentException()
   }
 }
+enum class Instruction { L, R, F }
+fun mapInstruction(value: String): Instruction {
+  return when (value) {
+    "L" -> Instruction.L
+    "R" -> Instruction.R
+    "F" -> Instruction.F
+    else -> throw IllegalArgumentException()
+  }
+}
+data class Spawn(val point: Point, val orientation: Orientation)
 
 
 fun reader(resource: String): Input {
@@ -24,21 +34,27 @@ fun reader(resource: String): Input {
   // we could check x or y is not greater than 50, but why should we restrict mars planet size?
   try {
     val upperRightGridPoint = Point(x.toInt(), y.toInt())
-    val instructions = lines.drop(1)
-    val instructionsIterator = instructions.iterator()
-    // var instructionsPair: List<Pair<String, String>> = mutableListOf()
-    while (instructionsIterator.hasNext()) { //TODO refactor, check 2 in advance
-      // spawn point
-      val spawnPointRaw = instructionsIterator.next().split(' ')
+    val sequence = lines.drop(1)
+    val sequenceIterator = sequence.iterator()
+    val spawnInstructionPairs: MutableList<Pair<Spawn, List<Instruction>>> = mutableListOf()
+    while (sequenceIterator.hasNext()) { // Check there is no instructions left, inside try to get two, else throw exception
+      // spawn point or initial position
+      val spawnPointRaw = sequenceIterator.next().split(' ')
       val (x, y, orientationInput) = spawnPointRaw
-      // TODO: could be checked x and y is less than upperRightGridPoint
+      // TODO: could be checked x and y is less than upperRightGridPoint, otherwise LOST in an outbound point will be printed... not big deal
       val spawnPoint = Point(x.toInt(), y.toInt())
       val orientation: Orientation = mapOrientation(orientationInput)
 
-      // movements
-    }
+      // movements or instructions
+      val instructions = sequenceIterator.next()
+        .split("")
+        .filter { item -> item.length > 0}
+        .map { instructionInput -> mapInstruction(instructionInput)}
 
-    return Input(upperRightGridPoint)
+      // mix them
+      spawnInstructionPairs.add(Pair(Spawn(spawnPoint, orientation), instructions))
+    }
+    return Input(upperRightGridPoint, spawnInstructionPairs)
   }
   catch (e: Exception) {
     throw IllegalArgumentException("invalid input please read docs")

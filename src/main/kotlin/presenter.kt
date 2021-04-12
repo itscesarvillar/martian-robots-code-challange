@@ -8,10 +8,14 @@ fun mapOrientation(value: Orientation): String {
 }
 class Presenter {
   companion object {
-    fun showResults(results: List<Pair<Point, Orientation>>) {
+    fun showResults(results: List<Triple<Point, Orientation, Boolean>>) {
       val formatedLines = mutableListOf<String>()
       for (result in results) {
-        formatedLines.add("${result.first.x} ${result.first.y} ${mapOrientation(result.second)}")
+        var formatedLine = "${result.first.x} ${result.first.y} ${mapOrientation(result.second)}"
+        if (result.third) {
+          formatedLine += " LOST"
+        }
+        formatedLines.add(formatedLine)
         // lines might be redundant, we can call write directly
       }
       write(formatedLines.joinToString("\n"))

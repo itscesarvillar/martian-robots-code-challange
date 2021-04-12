@@ -15,4 +15,11 @@ class ReaderTest {
       reader("wrongOrientationInput")
     }
   }
+
+  @Test
+  internal fun givenWrongLengthInput_thenThrowsIllegalArgumentException() {
+    Assertions.assertThrows(IllegalArgumentException::class.java) {
+      reader("wrongLengthInput")
+    }
+  }
 }

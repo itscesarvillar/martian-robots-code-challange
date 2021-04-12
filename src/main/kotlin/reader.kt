@@ -20,16 +20,23 @@ fun reader(resource: String): Input {
     return object {}.javaClass.getResource(path).readText()
   }
   val lines: List<String> = getResourceAsText(resource).split('\n').filter { line -> line.length > 0}
-  val (x, y) = lines[0].split(" ")
+  val (x, y) = lines.first().split(' ')
   // we could check x or y is not greater than 50, but why should we restrict mars planet size?
   try {
     val upperRightGridPoint = Point(x.toInt(), y.toInt())
+    val instructions = lines.drop(1)
+    val instructionsIterator = instructions.iterator()
+    // var instructionsPair: List<Pair<String, String>> = mutableListOf()
+    while (instructionsIterator.hasNext()) { //TODO refactor, check 2 in advance
+      // spawn point
+      val spawnPointRaw = instructionsIterator.next().split(' ')
+      val (x, y, orientationInput) = spawnPointRaw
+      // TODO: could be checked x and y is less than upperRightGridPoint
+      val spawnPoint = Point(x.toInt(), y.toInt())
+      val orientation: Orientation = mapOrientation(orientationInput)
 
-    // TODO: in a loop
-    val (x, y, orientationInput) = lines[1].split(" ")
-    // TODO: could be checked x and y is less than upperRightGridPoint
-    val spawnPoint = Point(x.toInt(), y.toInt())
-    val orientation: Orientation = mapOrientation(orientationInput)
+      // movements
+    }
 
     return Input(upperRightGridPoint)
   }

@@ -5,15 +5,11 @@ fun main(args: Array<String>) {
 
 class Controller {
   companion object {
-    private fun isOutOfBounds(point: Point, gridSize: Point): Boolean {
-      val exprX = point.x < 0 || point.x > gridSize.x
-      val exprY = point.y < 0 || point.y > gridSize.y
-      return exprX || exprY
-    }
+    private fun isOutOfBounds(point: Point, gridSize: Point): Boolean
+      = point.x !in 0..gridSize.x || point.y !in 0..gridSize.y
 
-    private fun init(resource: String): Input {
-      return reader(resource)
-    }
+    private fun init(resource: String): Input = reader(resource)
+
     private fun mission(missionBriefing: Input): List<Pair<Position, Boolean>> {
       val results: MutableList<Pair<Position, Boolean>> = mutableListOf()
       val radio = Radio()

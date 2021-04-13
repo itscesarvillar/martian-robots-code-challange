@@ -9,4 +9,21 @@ class RadioTest {
     radio.uplink(message) // should who uses the radio say who is it?
     Assertions.assertEquals(message, radio.lastMessage)
   }
+
+  @Test
+  internal fun hasDeadPositionsPropertyAsScentWithAddMethod() {
+    val radio = Radio()
+    Assertions.assertEquals(0, radio.deadPositions.size)
+    radio.addDeadPosition(Position(Point(0,0), Orientation.S))
+    Assertions.assertEquals(1, radio.deadPositions.size)
+  }
+
+  /**
+   * Although is not required it might be worthy having a parameter in constructor and init block
+   * or load method so radio could remember previous experiences
+   *
+  @Test
+  internal fun mightHavePresavedDeadPositions() {
+  }
+  */
 }

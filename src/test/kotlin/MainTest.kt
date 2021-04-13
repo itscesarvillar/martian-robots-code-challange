@@ -25,4 +25,18 @@ class MainTest {
       controller.end(listOf(Pair(Position(Point(0,2), Orientation.W), true)))
     }
   }
+
+  @Test
+  internal fun givenALostRobot_thenHelpsOther() {
+    val controller = spyk<Controller.Companion>()
+
+    controller.handleMission("helpingRobotInput")
+
+    verify {
+      controller.end(listOf(
+        Pair(Position(Point(0,2), Orientation.W), true),
+        Pair(Position(Point(0,1), Orientation.S), false)
+      ))
+    }
+  }
 }

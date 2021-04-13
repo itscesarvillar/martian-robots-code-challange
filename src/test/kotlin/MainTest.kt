@@ -11,7 +11,7 @@ class MainTest {
     controller.handleMission("simpleInput")
 
     verify {
-      controller.end(listOf(Triple(Point(1,2), Orientation.N, false)))
+      controller.end(listOf(Pair(Position(Point(1,2), Orientation.N), false)))
     }
   }
 
@@ -22,7 +22,7 @@ class MainTest {
     controller.handleMission("lostSimpleInput")
 
     verify {
-      controller.end(listOf(Triple(Point(0,2), Orientation.W, true)))
+      controller.end(listOf(Pair(Position(Point(0,2), Orientation.W), true)))
     }
   }
 }

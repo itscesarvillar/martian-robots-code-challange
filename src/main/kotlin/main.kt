@@ -5,24 +5,39 @@ fun main(args: Array<String>) {
 
 class Controller {
   companion object {
+    private fun isOutOfBounds(point: Point, gridSize: Point): Boolean {
+      val exprX = point.x < 0 || point.x > gridSize.x
+      val exprY = point.y < 0 || point.y > gridSize.y
+      return exprX || exprY
+    }
+
     private fun init(resource: String): Input {
       return reader(resource)
     }
-    private fun mission(missionBriefing: Input): List<Triple<Point, Orientation, Boolean>> {
-      val results: MutableList<Triple<Point, Orientation, Boolean>> = mutableListOf()
+    private fun mission(missionBriefing: Input): List<Pair<Position, Boolean>> {
+      val results: MutableList<Pair<Position, Boolean>> = mutableListOf()
       val radio = Radio()
 
       for ((spawnPosition, instructions) in missionBriefing.robotsSequence) {
         val robot = Robot(radio, spawnPosition)
-        for (instruction in instructions) {
+        val instructionIterator = instructions.iterator()
+        while(!this.isOutOfBounds(robot.position.point, missionBriefing.upperRightGridPoint)
+          && instructionIterator.hasNext()) {
+          val instruction = instructionIterator.next()
           robot.execute(instruction)
         }
-        results.add(Triple(robot.position.point, robot.position.orientation, false))
+        val isRobotLost = this.isOutOfBounds(robot.position.point, missionBriefing.upperRightGridPoint)
+        val positionToResult = if (isRobotLost) {
+          radio.lastMessage!!
+        } else {
+          robot.position
+        }
+        results.add(Pair(positionToResult, isRobotLost))
       }
       return results;
     }
-    fun end(results: List<Triple<Point, Orientation, Boolean>>) {
-      Presenter.showResults(results)
+    fun end(results: List<Pair<Position, Boolean>>) {
+      Presenter.showResults(results.map{ result -> Triple(result.first.point, result.first.orientation, result.second)})
     }
 
     fun handleMission(mapFromResource: String) {

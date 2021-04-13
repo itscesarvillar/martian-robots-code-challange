@@ -14,4 +14,15 @@ class MainTest {
       controller.end(listOf(Triple(Point(1,2), Orientation.N, false)))
     }
   }
+
+  @Test
+  internal fun onceUponATimeMarsWasFinite_thenRobotsGotLostBeforeExecutingTheirInstructions() {
+    val controller = spyk<Controller.Companion>()
+
+    controller.handleMission("lostSimpleInput")
+
+    verify {
+      controller.end(listOf(Triple(Point(0,2), Orientation.W, true)))
+    }
+  }
 }

@@ -5,13 +5,13 @@ import org.junit.jupiter.api.Test
 class MainTest {
   @Test
   internal fun givenSimpleInput_thenProducesASimpleOutput() {
-    val presenter = spyk<Presenter.Companion>()
+    val controller = spyk<Controller.Companion>()
 
     // no dead positions, just one robot
-    main(arrayOf("simpleInput"))
+    controller.handleMission("simpleInput")
 
     verify {
-      presenter.write("2 3 S")
+      controller.end(listOf(Triple(Point(1,2), Orientation.N, false)))
     }
   }
 }

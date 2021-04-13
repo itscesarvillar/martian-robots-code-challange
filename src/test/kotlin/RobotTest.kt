@@ -43,4 +43,21 @@ class RobotTest {
     robot.execute(Instruction.F)
     Assertions.assertEquals(Position(Point(3,1), Orientation.E), robot.position)
   }
+
+  @Test
+  internal fun sensesTheScentOfAncientRobots_thenIgnoresDangerPoints() {
+    val radio = Radio()
+    // actually radio is real-time so it can be contemporaneous with each other
+    // that is, this sentences could be place between robot instruction executions
+    radio.addDeadPosition(Position(Point(2,2), Orientation.N))
+    radio.addDeadPosition(Position(Point(2,2), Orientation.W))
+    val spawn = Position(Point(2,2), Orientation.N)
+    val robot = Robot(radio, spawn)
+
+    robot.execute(Instruction.F)
+    Assertions.assertEquals(Position(Point(2,2), Orientation.N), robot.position)
+    robot.execute(Instruction.L)
+    robot.execute(Instruction.F)
+    Assertions.assertEquals(Position(Point(2,2), Orientation.W), robot.position)
+  }
 }

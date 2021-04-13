@@ -1,6 +1,6 @@
 import java.lang.IllegalArgumentException
 
-data class Input (val upperRightGridPoint: Point, val robotsSequence: List<Pair<Position, List<Instruction>>>)
+data class Input(val upperRightGridPoint: Point, val robotsSequence: List<Pair<Position, List<Instruction>>>)
 
 fun mapOrientation(value: String): Orientation {
   return when (value) {

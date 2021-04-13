@@ -1,12 +1,12 @@
-class Robot (private val radio: Radio, spawnPosition: Position) {
+class Robot(private val radio: Radio, spawnPosition: Position) {
   var position = spawnPosition
 
-  fun execute (instruction: Instruction) {
+  fun execute(instruction: Instruction) {
     radio.uplink(this.position)
     when (instruction) {
       Instruction.R -> this.moveRight()
       Instruction.L -> this.moveLeft()
-      Instruction.F -> this.moveForward()
+      Instruction.F -> if (this.isSafePosition(this.position)) { this.moveForward() }
     }
   }
 
@@ -39,5 +39,9 @@ class Robot (private val radio: Radio, spawnPosition: Position) {
     }
     val (x,y) = this.position.point
     this.position = Position(Point(x + delta.first, y + delta.second), this.position.orientation)
+  }
+
+  private fun isSafePosition(position: Position): Boolean {
+    return !this.radio.deadPositions.contains(position)
   }
 }

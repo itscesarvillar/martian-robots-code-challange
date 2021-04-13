@@ -11,7 +11,6 @@ fun mapOrientation(value: String): Orientation {
     else -> throw IllegalArgumentException()
   }
 }
-enum class Instruction { L, R, F }
 fun mapInstruction(value: String): Instruction {
   return when (value) {
     "L" -> Instruction.L

@@ -52,3 +52,8 @@ LLFFFLFLFL
 3 3 N LOST
 2 3 S
 ```
+
+## Execution
+
+Navigate to `build/classes/kotlin/main/` and execute `java MainKt`
+and `input` file in resources folder (child of `src/main`) with the syntax of sample input is required. Also can be passed as first program argument. 

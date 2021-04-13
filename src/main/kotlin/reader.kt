@@ -1,7 +1,5 @@
 import java.lang.IllegalArgumentException
 
-data class Input(val upperRightGridPoint: Point, val robotsSequence: List<Pair<Position, List<Instruction>>>)
-
 fun mapOrientation(value: String): Orientation {
   return when (value) {
     "N" -> Orientation.N
@@ -19,7 +17,6 @@ fun mapInstruction(value: String): Instruction {
     else -> throw IllegalArgumentException()
   }
 }
-
 
 fun reader(resource: String): Input {
   fun getResourceAsText(path: String): String {

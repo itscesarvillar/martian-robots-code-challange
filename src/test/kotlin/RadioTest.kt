@@ -5,7 +5,7 @@ class RadioTest {
   @Test
   internal fun callingUplinkMethod_thenStorageThisMessage() {
     val radio = Radio()
-    val message = Spawn(Point(1,2), Orientation.E) // time to refactor... name and place
+    val message = Position(Point(1,2), Orientation.E)
     radio.uplink(message) // should who uses the radio say who is it?
     Assertions.assertEquals(message, radio.lastMessage)
   }

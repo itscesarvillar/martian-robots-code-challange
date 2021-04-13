@@ -1,9 +1,7 @@
 import java.lang.IllegalArgumentException
 
-data class Input(val upperRightGridPoint: Point, val robotsSequence: List<Pair<Spawn, List<Instruction>>>)
-// this is going to be reusable somewhere else, so it's a refactor thing
-data class Point(val x: Int, val y: Int)
-enum class Orientation { N, S, E, W }
+data class Input (val upperRightGridPoint: Point, val robotsSequence: List<Pair<Position, List<Instruction>>>)
+
 fun mapOrientation(value: String): Orientation {
   return when (value) {
     "N" -> Orientation.N
@@ -22,7 +20,6 @@ fun mapInstruction(value: String): Instruction {
     else -> throw IllegalArgumentException()
   }
 }
-data class Spawn(val point: Point, val orientation: Orientation)
 
 
 fun reader(resource: String): Input {
@@ -36,7 +33,7 @@ fun reader(resource: String): Input {
     val upperRightGridPoint = Point(x.toInt(), y.toInt())
     val sequence = lines.drop(1)
     val sequenceIterator = sequence.iterator()
-    val spawnInstructionPairs: MutableList<Pair<Spawn, List<Instruction>>> = mutableListOf()
+    val spawnInstructionPairs: MutableList<Pair<Position, List<Instruction>>> = mutableListOf()
     while (sequenceIterator.hasNext()) { // Check there is no instructions left, inside try to get two, else throw exception
       // spawn point or initial position
       val spawnPointRaw = sequenceIterator.next().split(' ')
@@ -52,7 +49,7 @@ fun reader(resource: String): Input {
         .map { instructionInput -> mapInstruction(instructionInput)}
 
       // mix them
-      spawnInstructionPairs.add(Pair(Spawn(spawnPoint, orientation), instructions))
+      spawnInstructionPairs.add(Pair(Position(spawnPoint, orientation), instructions))
     }
     return Input(upperRightGridPoint, spawnInstructionPairs)
   }

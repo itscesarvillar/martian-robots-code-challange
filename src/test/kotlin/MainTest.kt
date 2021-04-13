@@ -39,4 +39,23 @@ class MainTest {
       ))
     }
   }
+
+  @Test
+  internal fun given3Robots_thenOneLost2Survivors() {
+    // the same input in docs
+    // 1 1 E
+    // 3 3 N LOST
+    // 2 3 S
+    val controller = spyk<Controller.Companion>()
+
+    controller.handleMission("sampleInput")
+
+    verify {
+      controller.end(listOf(
+        Pair(Position(Point(1,1), Orientation.E), false),
+        Pair(Position(Point(3,3), Orientation.N), true),
+        Pair(Position(Point(2,3), Orientation.S), false)
+      ))
+    }
+  }
 }

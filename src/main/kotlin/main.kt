@@ -24,6 +24,7 @@ class Controller {
         }
         val isRobotLost = this.isOutOfBounds(robot.position.point, missionBriefing.upperRightGridPoint)
         val positionToResult = if (isRobotLost) {
+          radio.lastMessage?.let { radio.addDeadPosition(it) }
           radio.lastMessage!!
         } else {
           robot.position
